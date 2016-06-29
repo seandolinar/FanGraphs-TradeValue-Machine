@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base target="_top" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<script src="http://code.jquery.com/jquery-1.12.0.min.js"></script>-->
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>-->
+    <script src="js/d3.v3.min.js"></script>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.js"></script>
+    <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css' />
+
+    <style>
+        .fg-tool {
+            width: 600px;
+            max-width: 100%;
+        }
+        
+        .ui-autocomplete-input {
+            width: 230px;
+            height: 30px;
+            font-family: Lato, Arial;
+            font-size: 18px;
+        }
+        
+        .ui-menu {
+            background-color: #FFFFFF;
+            width: 300px;
+            border: 1px solid black;
+            list-style: none;
+            padding: 0;
+            list-style-type: none;
+        }
+        
+        .ui-helper-hidden-accessible {
+            display: none;
+        }
+        
+        .ui-state-focus {
+            background-color: #A0A0A0;
+        }
+        
+        .ui-menu-item {
+            padding: 2px;
+        }
+        
+        .tool-container {
+            margin-bottom: 30px;
+        }
+        
+        .color-swatch,
+        .table-swatch,
+        .row-swatch,
+        .header-swatch {
+            cursor: pointer;
+            font-size: 10px;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            display: inline-block;
+            text-align: center;
+            vertical-align: middle;
+            border: 3px solid #303030;
+            margin: 1px 0px;
+            color: black;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class='fg-tool'>
+        <p style="font-size: 30px;">Trade Value Tool</p>
+        <p style="font-size: 18px;">Enter Player and number of years for projected WAR.</p>
+        <div class="tool-container">
+            Player Name<input id="name-in" class="tool-in" type="text" />
+            <select class="year-in"></select>
+        </div>
+
+        <div class="table-container" style="max-width: 450px; background-color: white; margin: 0 auto; display: none;">
+            <img id="FG" " src="http://www.fangraphs.com/blogs/wp-content/uploads/2015/08/FG_logo_transparency.png "
+                style="position: absolute; height: 30px; padding: 3px 0px 3px 5px; " draggable="false "/>
+            <div class="table-title " id="table-title " style="min-height: 22px; text-align: center; vertical-align: middle;
+                padding: 7px 50px; font-family: Lato, Arial; color: white; font-size: 18px; word-wrap: break-word; line-height:
+                1; border: 1px solid #50ae26; background-color: RGB(82, 174, 38); ">#3 -- Paul Goldschmidt, ARZ, OF</div>
+            <table border="1 " class="table-top " style="width: 100%; border-collapse: collapse; font-size: 14px; padding:
+                10px 10px; font-family: Lato, Arial; border: 1px solid black; border-bottom: 3px solid black; ">
+                <tr>
+                    <td style="text-align: center; width: 60%; ">Five-Year WAR</td>
+                    <td id="out-fivewar " style="text-align: center; ">+30.0</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; ">Guaranteed Salary</td>
+                    <td id="out-allsalary " style="text-align: center; ">$200.0 M</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; ">Team Control Through</td>
+                    <td id="out-control " style="text-align: center; ">5 years</td>
+                </tr>
+                <tr>
+                    <td style="text-align: center; ">Previous Rank</td>
+                    <td id="out-prevrank " style="text-align: center; ">20</td>
+                </tr>
+            </table>
+            <table border="1 " class="table-contract " style="font-family: Lato, Arial; width: 100%; border: 1px solid
+                black; border-collapse: collapse; text-align: center; margin-bottom: 0px; font-size: 14px; ">
+                <tr class="table-header " style="text-align: center; color: white; background-color: rgb(80, 80, 80); ">
+                    <th class="out-header " style="width: 20% ">Year</th>
+                    <th class="out-header " style="width: 20% ">Age</th>
+                    <th class="out-header " style="width: 30% ">Projected WAR</th>
+                    <th class="out-header " style="width: 30% ">Contract Status</th>
+                </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="grid-container " style="width: 600px; margin-top: 50px; ">
+                    <div class="table-container " style="max-width: 600px; background-color: white; margin: 0 auto; display:
+                block; ">
+            <img id="FG " " src="http://www.fangraphs.com/blogs/wp-content/uploads/2015/08/FG_logo_transparency.png " style="position: absolute; height: 30px; padding: 3px 0px 3px 5px; "
+                draggable="false " />
+            <div class="grid-title" style="min-height: 22px; text-align: center; vertical-align: middle;
+                padding: 7px 50px; font-family: Lato, Arial; color: white; font-size: 18px; word-wrap: break-word; line-height:
+                1; border: 1px solid #50ae26; background-color: RGB(82, 174, 38); ">2016 Trade Value, 20-10</div>
+            <table border="1 " class="grid-table" style="width: 100%; border-collapse: collapse; font-size: 14px; padding:
+                10px 10px; font-family: Lato, Arial; border: 1px solid black; text-align: center; table-layout: fixed;">
+                <tr class="table-header " style="text-align: center; color: white; background-color: rgb(80, 80, 80); ">
+                    <th class="grid-header" style="width: 7% ">Rk</th>
+                    <th class="grid-header" style="width: 7% ">Pv</th>
+                    <th class="grid-header" style="width: 25% ">Player</th>
+                    <th class="grid-header">2017</th>
+                    <th class="grid-header">2018</th>
+                    <th class="grid-header">2019</th>
+                    <th class="grid-header">2020</th>
+                    <th class="grid-header">2021</th>
+                </tr>
+            </table>
+
+        </div>
+        <script type="text/javascript " src="js/tradevalue-machine.js "></script>
+</body>
+
+</html>
